@@ -1,0 +1,772 @@
+
+
+<!DOCTYPE html>
+
+<html>
+
+
+<head>
+
+<meta charset="UTF-8">
+
+
+<title>
+GeoAudit Report
+</title>
+
+
+
+<link
+rel="stylesheet"
+href="https://cdn.datatables.net/1.13.8/css/jquery.dataTables.min.css">
+
+
+
+<style>
+
+
+body {
+
+    font-family: Segoe UI, Arial;
+
+    background:#f1f5f9;
+
+    margin:40px;
+
+    color:#1e293b;
+
+}
+
+
+
+.header {
+
+    background:#0f172a;
+
+    color:white;
+
+    padding:30px;
+
+    border-radius:20px;
+
+}
+
+
+
+.header h1 {
+
+    margin:0;
+
+    font-size:38px;
+
+}
+
+
+
+.kpi-container {
+
+    display:flex;
+
+    gap:20px;
+
+    margin-top:30px;
+
+    flex-wrap:wrap;
+
+}
+
+
+
+.kpi {
+
+    background:white;
+
+    padding:25px;
+
+    border-radius:15px;
+
+    flex:1;
+
+    min-width:200px;
+
+    text-align:center;
+
+    box-shadow:0 5px 15px rgba(0,0,0,0.1);
+
+}
+
+
+
+.kpi h2 {
+
+    font-size:40px;
+
+    margin:0;
+
+}
+
+
+
+.layer-container {
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(auto-fit,minmax(280px,1fr));
+
+    gap:25px;
+
+}
+
+
+
+.layer-card {
+
+    background:white;
+
+    padding:25px;
+
+    border-radius:15px;
+
+    box-shadow:0 5px 15px rgba(0,0,0,0.1);
+
+}
+
+
+
+.score {
+
+    font-size:40px;
+
+    font-weight:bold;
+
+}
+
+
+
+.progress {
+
+    background:#e2e8f0;
+
+    height:15px;
+
+    border-radius:10px;
+
+    margin:15px 0;
+
+}
+
+
+
+.progress-bar {
+
+    height:15px;
+
+    border-radius:10px;
+
+}
+
+
+
+.badge {
+
+    color:white;
+
+    padding:8px 18px;
+
+    border-radius:20px;
+
+    font-weight:bold;
+
+}
+
+
+
+.section {
+
+    margin-top:50px;
+
+}
+
+
+
+table {
+
+    background:white;
+
+}
+
+
+
+</style>
+
+
+</head>
+
+
+
+<body>
+
+
+
+<div class="header">
+
+<h1>
+🗺️ GeoAudit
+</h1>
+
+<p>
+Plateforme d'audit qualité des données spatiales
+</p>
+
+
+<p>
+Rapport généré le : 12/07/2026 15:09
+</p>
+
+
+</div>
+
+
+
+
+<div class="section">
+
+
+<h2>
+📊 Indicateurs globaux
+</h2>
+
+
+
+<div class="kpi-container">
+
+
+<div class="kpi">
+
+<h2>
+2
+</h2>
+
+<p>
+Couches auditées
+</p>
+
+</div>
+
+
+
+<div class="kpi">
+
+<h2>
+60.71 %
+</h2>
+
+<p>
+Score moyen
+</p>
+
+</div>
+
+
+
+<div class="kpi">
+
+<h2>
+32
+</h2>
+
+<p>
+Contrôles exécutés
+</p>
+
+</div>
+
+
+
+<div class="kpi">
+
+<h2>
+2
+</h2>
+
+<p>
+Erreurs détectées
+</p>
+
+</div>
+
+
+</div>
+
+</div>
+
+
+
+
+
+<div class="section">
+
+
+<h2>
+🎯 Qualité par couche
+</h2>
+
+
+
+<div class="layer-container">
+
+
+
+        <div class="layer-card">
+
+            <h3>communes_dile_de_france_au_01_janvier</h3>
+
+            <div class="score">
+                60.71 %
+            </div>
+
+
+            <div class="progress">
+
+                <div
+                class="progress-bar"
+                style="
+                width:60.71%;
+                background:#f59e0b;
+                ">
+                </div>
+
+            </div>
+
+
+            <span
+            class="badge"
+            style="
+            background:#f59e0b;
+            ">
+
+            MOYEN
+
+            </span>
+
+
+        </div>
+
+        
+
+        <div class="layer-card">
+
+            <h3>iris</h3>
+
+            <div class="score">
+                60.71 %
+            </div>
+
+
+            <div class="progress">
+
+                <div
+                class="progress-bar"
+                style="
+                width:60.71%;
+                background:#f59e0b;
+                ">
+                </div>
+
+            </div>
+
+
+            <span
+            class="badge"
+            style="
+            background:#f59e0b;
+            ">
+
+            MOYEN
+
+            </span>
+
+
+        </div>
+
+        
+
+</div>
+
+
+</div>
+
+
+
+
+
+<div class="section">
+
+
+<h2>
+🔎 Détails des contrôles
+</h2>
+
+
+
+<table border="1" class="dataframe display" id="auditTable">
+  <thead>
+    <tr style="text-align: right;">
+      <th>rule_code</th>
+      <th>rule_name</th>
+      <th>table_name</th>
+      <th>status</th>
+      <th>nb_errors</th>
+      <th>details</th>
+      <th>check_date</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>G001</td>
+      <td>GEOMETRY_VALID</td>
+      <td>communes_dile_de_france_au_01_janvier</td>
+      <td>OK</td>
+      <td>0</td>
+      <td>Nombre de géométries invalides</td>
+      <td>2026-07-12 15:09:16.165928</td>
+    </tr>
+    <tr>
+      <td>G002</td>
+      <td>EMPTY_GEOMETRY</td>
+      <td>communes_dile_de_france_au_01_janvier</td>
+      <td>OK</td>
+      <td>0</td>
+      <td>Nombre de géométries vides</td>
+      <td>2026-07-12 15:09:16.165928</td>
+    </tr>
+    <tr>
+      <td>G003</td>
+      <td>SRID_CHECK</td>
+      <td>communes_dile_de_france_au_01_janvier</td>
+      <td>ERROR</td>
+      <td>1287</td>
+      <td>Système de coordonnées différent de EPSG:2154</td>
+      <td>2026-07-12 15:09:16.165928</td>
+    </tr>
+    <tr>
+      <td>G004</td>
+      <td>GEOMETRY_TYPE</td>
+      <td>communes_dile_de_france_au_01_janvier</td>
+      <td>INFO</td>
+      <td>1287</td>
+      <td>POLYGON</td>
+      <td>2026-07-12 15:09:16.165928</td>
+    </tr>
+    <tr>
+      <td>G005</td>
+      <td>ENTITY_COUNT</td>
+      <td>communes_dile_de_france_au_01_janvier</td>
+      <td>INFO</td>
+      <td>1287</td>
+      <td>Nombre total d entités</td>
+      <td>2026-07-12 15:09:16.165928</td>
+    </tr>
+    <tr>
+      <td>G006</td>
+      <td>NULL_GEOMETRY</td>
+      <td>communes_dile_de_france_au_01_janvier</td>
+      <td>OK</td>
+      <td>0</td>
+      <td>Entités sans géométrie</td>
+      <td>2026-07-12 15:09:16.165928</td>
+    </tr>
+    <tr>
+      <td>G007</td>
+      <td>DUPLICATE_GEOMETRY</td>
+      <td>communes_dile_de_france_au_01_janvier</td>
+      <td>OK</td>
+      <td>0</td>
+      <td>Géométries identiques détectées</td>
+      <td>2026-07-12 15:09:16.165928</td>
+    </tr>
+    <tr>
+      <td>G008</td>
+      <td>COLUMN_COUNT</td>
+      <td>communes_dile_de_france_au_01_janvier</td>
+      <td>INFO</td>
+      <td>10</td>
+      <td>Nombre de colonnes attributaires</td>
+      <td>2026-07-12 15:09:16.165928</td>
+    </tr>
+    <tr>
+      <td>G009</td>
+      <td>NULL_ATTRIBUTES</td>
+      <td>communes_dile_de_france_au_01_janvier</td>
+      <td>INFO</td>
+      <td>1287</td>
+      <td>Nombre de lignes avec valeurs NULL</td>
+      <td>2026-07-12 15:09:16.165928</td>
+    </tr>
+    <tr>
+      <td>G010</td>
+      <td>VERTEX_COUNT</td>
+      <td>communes_dile_de_france_au_01_janvier</td>
+      <td>INFO</td>
+      <td>15923</td>
+      <td>Nombre total de sommets</td>
+      <td>2026-07-12 15:09:16.165928</td>
+    </tr>
+    <tr>
+      <td>G011</td>
+      <td>SPATIAL_EXTENT</td>
+      <td>communes_dile_de_france_au_01_janvier</td>
+      <td>INFO</td>
+      <td>1</td>
+      <td>BOX(1.447279504766019 48.120541543740536,3.555686958558566 49.2371907073631)</td>
+      <td>2026-07-12 15:09:16.165928</td>
+    </tr>
+    <tr>
+      <td>G012</td>
+      <td>MULTIPART_GEOMETRY</td>
+      <td>communes_dile_de_france_au_01_janvier</td>
+      <td>INFO</td>
+      <td>0</td>
+      <td>Nombre de géométries multiparties</td>
+      <td>2026-07-12 15:09:16.165928</td>
+    </tr>
+    <tr>
+      <td>G013</td>
+      <td>ZERO_AREA</td>
+      <td>communes_dile_de_france_au_01_janvier</td>
+      <td>OK</td>
+      <td>0</td>
+      <td>Polygones avec surface nulle</td>
+      <td>2026-07-12 15:09:16.165928</td>
+    </tr>
+    <tr>
+      <td>G014</td>
+      <td>ZERO_LENGTH</td>
+      <td>communes_dile_de_france_au_01_janvier</td>
+      <td>OK</td>
+      <td>0</td>
+      <td>Lignes avec longueur nulle</td>
+      <td>2026-07-12 15:09:16.165928</td>
+    </tr>
+    <tr>
+      <td>G015</td>
+      <td>GEOMETRY_COMPLEXITY</td>
+      <td>communes_dile_de_france_au_01_janvier</td>
+      <td>INFO</td>
+      <td>55</td>
+      <td>Nombre maximum de sommets dans une géométrie</td>
+      <td>2026-07-12 15:09:16.165928</td>
+    </tr>
+    <tr>
+      <td>G016</td>
+      <td>EMPTY_EXTENT</td>
+      <td>communes_dile_de_france_au_01_janvier</td>
+      <td>OK</td>
+      <td>0</td>
+      <td>Vérification de l emprise spatiale</td>
+      <td>2026-07-12 15:09:16.165928</td>
+    </tr>
+    <tr>
+      <td>G001</td>
+      <td>GEOMETRY_VALID</td>
+      <td>iris</td>
+      <td>OK</td>
+      <td>0</td>
+      <td>Nombre de géométries invalides</td>
+      <td>2026-07-12 15:09:16.334656</td>
+    </tr>
+    <tr>
+      <td>G002</td>
+      <td>EMPTY_GEOMETRY</td>
+      <td>iris</td>
+      <td>OK</td>
+      <td>0</td>
+      <td>Nombre de géométries vides</td>
+      <td>2026-07-12 15:09:16.334656</td>
+    </tr>
+    <tr>
+      <td>G003</td>
+      <td>SRID_CHECK</td>
+      <td>iris</td>
+      <td>ERROR</td>
+      <td>19</td>
+      <td>Système de coordonnées différent de EPSG:2154</td>
+      <td>2026-07-12 15:09:16.334656</td>
+    </tr>
+    <tr>
+      <td>G004</td>
+      <td>GEOMETRY_TYPE</td>
+      <td>iris</td>
+      <td>INFO</td>
+      <td>19</td>
+      <td>POLYGON</td>
+      <td>2026-07-12 15:09:16.334656</td>
+    </tr>
+    <tr>
+      <td>G005</td>
+      <td>ENTITY_COUNT</td>
+      <td>iris</td>
+      <td>INFO</td>
+      <td>19</td>
+      <td>Nombre total d entités</td>
+      <td>2026-07-12 15:09:16.334656</td>
+    </tr>
+    <tr>
+      <td>G006</td>
+      <td>NULL_GEOMETRY</td>
+      <td>iris</td>
+      <td>OK</td>
+      <td>0</td>
+      <td>Entités sans géométrie</td>
+      <td>2026-07-12 15:09:16.334656</td>
+    </tr>
+    <tr>
+      <td>G007</td>
+      <td>DUPLICATE_GEOMETRY</td>
+      <td>iris</td>
+      <td>OK</td>
+      <td>0</td>
+      <td>Géométries identiques détectées</td>
+      <td>2026-07-12 15:09:16.334656</td>
+    </tr>
+    <tr>
+      <td>G008</td>
+      <td>COLUMN_COUNT</td>
+      <td>iris</td>
+      <td>INFO</td>
+      <td>10</td>
+      <td>Nombre de colonnes attributaires</td>
+      <td>2026-07-12 15:09:16.334656</td>
+    </tr>
+    <tr>
+      <td>G009</td>
+      <td>NULL_ATTRIBUTES</td>
+      <td>iris</td>
+      <td>INFO</td>
+      <td>19</td>
+      <td>Nombre de lignes avec valeurs NULL</td>
+      <td>2026-07-12 15:09:16.334656</td>
+    </tr>
+    <tr>
+      <td>G010</td>
+      <td>VERTEX_COUNT</td>
+      <td>iris</td>
+      <td>INFO</td>
+      <td>514</td>
+      <td>Nombre total de sommets</td>
+      <td>2026-07-12 15:09:16.334656</td>
+    </tr>
+    <tr>
+      <td>G011</td>
+      <td>SPATIAL_EXTENT</td>
+      <td>iris</td>
+      <td>INFO</td>
+      <td>1</td>
+      <td>BOX(2.247561180577504 48.91270668647975,2.328449672778644 48.9510880950149)</td>
+      <td>2026-07-12 15:09:16.334656</td>
+    </tr>
+    <tr>
+      <td>G012</td>
+      <td>MULTIPART_GEOMETRY</td>
+      <td>iris</td>
+      <td>INFO</td>
+      <td>0</td>
+      <td>Nombre de géométries multiparties</td>
+      <td>2026-07-12 15:09:16.334656</td>
+    </tr>
+    <tr>
+      <td>G013</td>
+      <td>ZERO_AREA</td>
+      <td>iris</td>
+      <td>OK</td>
+      <td>0</td>
+      <td>Polygones avec surface nulle</td>
+      <td>2026-07-12 15:09:16.334656</td>
+    </tr>
+    <tr>
+      <td>G014</td>
+      <td>ZERO_LENGTH</td>
+      <td>iris</td>
+      <td>OK</td>
+      <td>0</td>
+      <td>Lignes avec longueur nulle</td>
+      <td>2026-07-12 15:09:16.334656</td>
+    </tr>
+    <tr>
+      <td>G015</td>
+      <td>GEOMETRY_COMPLEXITY</td>
+      <td>iris</td>
+      <td>INFO</td>
+      <td>106</td>
+      <td>Nombre maximum de sommets dans une géométrie</td>
+      <td>2026-07-12 15:09:16.334656</td>
+    </tr>
+    <tr>
+      <td>G016</td>
+      <td>EMPTY_EXTENT</td>
+      <td>iris</td>
+      <td>OK</td>
+      <td>0</td>
+      <td>Vérification de l emprise spatiale</td>
+      <td>2026-07-12 15:09:16.334656</td>
+    </tr>
+  </tbody>
+</table>
+
+
+</div>
+
+
+
+
+
+<script
+src="https://code.jquery.com/jquery-3.7.1.min.js">
+</script>
+
+
+
+<script
+src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js">
+</script>
+
+
+
+<script>
+
+
+$(document).ready(function(){
+
+
+$('#auditTable').DataTable({
+
+    pageLength:10,
+
+    language:{
+
+        search:"Rechercher :",
+
+        lengthMenu:
+        "Afficher _MENU_ lignes",
+
+        info:
+        "Affichage _START_ à _END_ sur _TOTAL_ résultats"
+
+    }
+
+});
+
+
+});
+
+
+</script>
+
+
+
+</body>
+
+
+</html>
+

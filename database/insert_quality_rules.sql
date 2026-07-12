@@ -4,7 +4,8 @@ rule_code,
 rule_name,
 category,
 severity,
-description
+description,
+parameters
 )
 
 VALUES
@@ -14,7 +15,8 @@ VALUES
 'GEOMETRY_VALID',
 'geometry',
 'ERROR',
-'Détection des géométries invalides'
+'Détection des géométries invalides',
+NULL
 ),
 
 (
@@ -22,7 +24,8 @@ VALUES
 'EMPTY_GEOMETRY',
 'geometry',
 'ERROR',
-'Détection des géométries vides'
+'Détection des géométries vides',
+NULL
 ),
 
 (
@@ -30,7 +33,8 @@ VALUES
 'SRID_CHECK',
 'projection',
 'ERROR',
-'Contrôle du système de coordonnées'
+'Contrôle du système de coordonnées',
+'{"expected_srid":2154}'
 ),
 
 (
@@ -38,7 +42,8 @@ VALUES
 'GEOMETRY_TYPE',
 'geometry',
 'INFO',
-'Identification du type géométrique'
+'Identification du type géométrique',
+NULL
 ),
 
 (
@@ -46,7 +51,8 @@ VALUES
 'ENTITY_COUNT',
 'statistics',
 'INFO',
-'Nombre total d entités'
+'Nombre total d entités',
+NULL
 ),
 
 (
@@ -54,7 +60,8 @@ VALUES
 'NULL_GEOMETRY',
 'geometry',
 'ERROR',
-'Présence de géométries NULL'
+'Présence de géométries NULL',
+NULL
 ),
 
 (
@@ -62,7 +69,8 @@ VALUES
 'DUPLICATE_GEOMETRY',
 'geometry',
 'WARNING',
-'Détection de doublons géométriques'
+'Détection de doublons géométriques',
+NULL
 ),
 
 (
@@ -70,7 +78,8 @@ VALUES
 'COLUMN_COUNT',
 'structure',
 'INFO',
-'Nombre de colonnes'
+'Nombre de colonnes',
+NULL
 ),
 
 (
@@ -78,7 +87,8 @@ VALUES
 'NULL_ATTRIBUTES',
 'attribute',
 'WARNING',
-'Valeurs attributaires NULL'
+'Valeurs attributaires NULL',
+NULL
 ),
 
 (
@@ -86,5 +96,61 @@ VALUES
 'VERTEX_COUNT',
 'geometry',
 'INFO',
-'Nombre de sommets'
+'Nombre de sommets',
+NULL
+),
+
+
+(
+'G011',
+'SPATIAL_EXTENT',
+'spatial',
+'INFO',
+'Calcul de l emprise spatiale',
+NULL
+),
+
+(
+'G012',
+'MULTIPART_GEOMETRY',
+'geometry',
+'INFO',
+'Détection des géométries multiparties',
+NULL
+),
+
+(
+'G013',
+'ZERO_AREA',
+'geometry',
+'ERROR',
+'Détection des polygones avec surface nulle',
+'{"min_area":1}'
+),
+
+(
+'G014',
+'ZERO_LENGTH',
+'geometry',
+'ERROR',
+'Détection des lignes avec longueur nulle',
+'{"min_length":1}'
+),
+
+(
+'G015',
+'GEOMETRY_COMPLEXITY',
+'geometry',
+'INFO',
+'Mesure de la complexité géométrique',
+'{"max_vertices":10000}'
+),
+
+(
+'G016',
+'EMPTY_EXTENT',
+'spatial',
+'ERROR',
+'Vérification d une emprise spatiale vide',
+NULL
 );

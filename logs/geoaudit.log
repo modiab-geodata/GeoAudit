@@ -1,0 +1,12 @@
+2026-07-12 15:09:15 | INFO | ========== Démarrage GeoAudit ==========
+2026-07-12 15:09:15 | INFO | Connexion PostgreSQL/PostGIS réussie
+2026-07-12 15:09:15 | INFO | Anciennes sorties quality_results supprimées
+2026-07-12 15:09:16 | INFO | Couches spatiales détectées : ['communes_dile_de_france_au_01_janvier', 'iris']
+2026-07-12 15:09:16 | INFO | Début audit couche : communes_dile_de_france_au_01_janvier
+2026-07-12 15:09:16 | INFO | Audit terminé : communes_dile_de_france_au_01_janvier
+2026-07-12 15:09:16 | INFO | Début audit couche : iris
+2026-07-12 15:09:16 | INFO | Audit terminé : iris
+2026-07-12 15:09:16 | INFO | Résumé des audits généré
+2026-07-12 15:09:16 | INFO | Rapport Excel généré
+2026-07-12 15:09:17 | INFO | Rapport HTML généré
+2026-07-12 15:09:17 | INFO | GeoAudit terminé avec succès - 2 couches analysées

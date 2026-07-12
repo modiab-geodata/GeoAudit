@@ -4,18 +4,19 @@ from sqlalchemy import text
 
 def get_active_rules():
 
-    engine = get_engine()
-
     query = """
     SELECT
         rule_code,
         rule_name,
         category,
-        severity
+        severity,
+        parameters
     FROM quality_rules
     WHERE active = TRUE
     ORDER BY rule_code;
     """
+
+    engine = get_engine()
 
     with engine.connect() as connection:
 
@@ -55,7 +56,8 @@ def run_generic_rules(table_name):
         print(
             "-",
             rule.rule_code,
-            rule.rule_name
+            rule.rule_name,
+            rule.parameters
         )
 
 

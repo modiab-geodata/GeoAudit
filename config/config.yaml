@@ -1,8 +1,12 @@
-# Configuration GeoAudit
+# =====================================================
+# GeoAudit - Configuration
+# =====================================================
 
-audit:
-  table_name: iris
+project:
+  name: GeoAudit
+  version: 1.0
 
 rules:
+
   generic: true
   specific: true
