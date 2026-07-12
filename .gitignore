@@ -1,0 +1,16 @@
+# Variables d'environnement
+.env
+
+# Environnement virtuel
+.venv/
+
+# Cache Python
+__pycache__/
+*.pyc
+
+# Rapports générés
+reports/*.html
+reports/*.xlsx
+
+# VS Code
+.vscode/
