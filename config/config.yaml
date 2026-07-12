@@ -1,0 +1,8 @@
+# Configuration GeoAudit
+
+audit:
+  table_name: iris
+
+rules:
+  generic: true
+  specific: true
