@@ -26,8 +26,6 @@ def get_active_rules():
 
     return rules
 
-
-
 def load_rules_file():
 
     with open(
@@ -38,16 +36,12 @@ def load_rules_file():
 
         return file.read()
 
-
-
 def run_generic_rules(table_name):
 
     engine = get_engine()
 
-
     # récupération des règles actives
     active_rules = get_active_rules()
-
 
     print("\nRègles actives :")
 
@@ -60,22 +54,17 @@ def run_generic_rules(table_name):
             rule.parameters
         )
 
-
     sql_rules = load_rules_file()
-
-
     sql_rules = sql_rules.replace(
         "{{TABLE_NAME}}",
         table_name
     )
-
 
     with engine.begin() as connection:
 
         connection.execute(
             text(sql_rules)
         )
-
 
     print(
         "\nAudit terminé pour la table :",

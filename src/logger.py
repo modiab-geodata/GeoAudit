@@ -1,18 +1,13 @@
 import logging
 from pathlib import Path
 
-
 LOG_DIR = Path("logs")
-
 
 LOG_DIR.mkdir(
     exist_ok=True
 )
 
-
 LOG_FILE = LOG_DIR / "geoaudit.log"
-
-
 
 logging.basicConfig(
 
@@ -26,8 +21,6 @@ logging.basicConfig(
     datefmt="%Y-%m-%d %H:%M:%S"
 
 )
-
-
 
 def get_logger():
 

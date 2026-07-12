@@ -1,416 +1,445 @@
 
-
 <!DOCTYPE html>
-
-<html>
-
-
+<html lang="fr">
 <head>
-
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GeoAudit Report</title>
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-<title>
-GeoAudit Report
-</title>
-
-
-
-<link
-rel="stylesheet"
-href="https://cdn.datatables.net/1.13.8/css/jquery.dataTables.min.css">
-
-
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/jquery.dataTables.min.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
 
 <style>
 
+:root {
+    --bg: #f1f5f9;
+    --surface: #ffffff;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --border: #e2e8f0;
+    --primary: #0f172a;
+    --primary-light: #1e293b;
+    --accent: #6366f1;
+    --radius-lg: 20px;
+    --radius-md: 15px;
+    --shadow: 0 5px 20px rgba(15, 23, 42, 0.08);
+    --shadow-hover: 0 10px 30px rgba(15, 23, 42, 0.14);
+}
+
+* {
+    box-sizing: border-box;
+}
 
 body {
-
-    font-family: Segoe UI, Arial;
-
-    background:#f1f5f9;
-
-    margin:40px;
-
-    color:#1e293b;
-
+    font-family: "Inter", Segoe UI, Arial, sans-serif;
+    background: var(--bg);
+    margin: 0;
+    padding: 40px;
+    color: var(--text);
 }
-
-
 
 .header {
-
-    background:#0f172a;
-
-    color:white;
-
-    padding:30px;
-
-    border-radius:20px;
-
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 60%, #312e81 100%);
+    color: white;
+    padding: 40px;
+    border-radius: var(--radius-lg);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 20px;
+    box-shadow: var(--shadow);
 }
 
-
-
-.header h1 {
-
-    margin:0;
-
-    font-size:38px;
-
+.header-left h1 {
+    margin: 0;
+    font-size: 38px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
 }
 
-
-
-.kpi-container {
-
-    display:flex;
-
-    gap:20px;
-
-    margin-top:30px;
-
-    flex-wrap:wrap;
-
+.header-left p {
+    margin: 8px 0 0 0;
+    color: #cbd5e1;
+    font-size: 15px;
 }
 
-
-
-.kpi {
-
-    background:white;
-
-    padding:25px;
-
-    border-radius:15px;
-
-    flex:1;
-
-    min-width:200px;
-
-    text-align:center;
-
-    box-shadow:0 5px 15px rgba(0,0,0,0.1);
-
+.header-right {
+    text-align: right;
+    font-size: 13px;
+    color: #94a3b8;
 }
 
-
-
-.kpi h2 {
-
-    font-size:40px;
-
-    margin:0;
-
+.header-right .badge-live {
+    display: inline-block;
+    background: rgba(34, 197, 94, 0.15);
+    color: #4ade80;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 12px;
+    margin-bottom: 8px;
 }
-
-
-
-.layer-container {
-
-    display:grid;
-
-    grid-template-columns:
-    repeat(auto-fit,minmax(280px,1fr));
-
-    gap:25px;
-
-}
-
-
-
-.layer-card {
-
-    background:white;
-
-    padding:25px;
-
-    border-radius:15px;
-
-    box-shadow:0 5px 15px rgba(0,0,0,0.1);
-
-}
-
-
-
-.score {
-
-    font-size:40px;
-
-    font-weight:bold;
-
-}
-
-
-
-.progress {
-
-    background:#e2e8f0;
-
-    height:15px;
-
-    border-radius:10px;
-
-    margin:15px 0;
-
-}
-
-
-
-.progress-bar {
-
-    height:15px;
-
-    border-radius:10px;
-
-}
-
-
-
-.badge {
-
-    color:white;
-
-    padding:8px 18px;
-
-    border-radius:20px;
-
-    font-weight:bold;
-
-}
-
-
 
 .section {
-
-    margin-top:50px;
-
+    margin-top: 45px;
 }
 
-
-
-table {
-
-    background:white;
-
+.section-title {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 22px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
+.section-title .count {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-muted);
+    background: var(--surface);
+    padding: 4px 12px;
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+}
 
+/* KPI cards */
+
+.kpi-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+.kpi {
+    background: var(--surface);
+    padding: 26px;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow);
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.kpi:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-hover);
+}
+
+.kpi-icon {
+    font-size: 30px;
+    width: 56px;
+    height: 56px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.kpi-body h2 {
+    font-size: 32px;
+    margin: 0;
+    font-weight: 800;
+}
+
+.kpi-body p {
+    margin: 4px 0 0 0;
+    color: var(--text-muted);
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.kpi-icon.blue { background: #eef2ff; color: #6366f1; }
+.kpi-icon.green { background: #ecfdf5; color: #16a34a; }
+.kpi-icon.amber { background: #fffbeb; color: #f59e0b; }
+.kpi-icon.red { background: #fef2f2; color: #dc2626; }
+
+/* Charts */
+
+.charts-container {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 20px;
+}
+
+.chart-card {
+    background: var(--surface);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow);
+    padding: 24px;
+}
+
+.chart-card h4 {
+    margin: 0 0 18px 0;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+}
+
+.chart-wrapper {
+    position: relative;
+    height: 280px;
+}
+
+/* Layer cards */
+
+.filters {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.filter-btn {
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text-muted);
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    font-family: inherit;
+}
+
+.filter-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+.filter-btn.active {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+}
+
+.layer-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+}
+
+.layer-card {
+    background: var(--surface);
+    padding: 24px;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.layer-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-hover);
+}
+
+.layer-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 14px;
+}
+
+.layer-card h3 {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 700;
+    word-break: break-word;
+}
+
+.score {
+    font-size: 34px;
+    font-weight: 800;
+    margin-bottom: 12px;
+}
+
+.progress {
+    background: var(--border);
+    height: 10px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 10px;
+    border-radius: 10px;
+    transition: width 0.6s ease;
+}
+
+.badge {
+    color: white;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+}
+
+/* Table */
+
+.table-card {
+    background: var(--surface);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow);
+    padding: 24px;
+    overflow-x: auto;
+}
+
+table.dataTable {
+    font-size: 13px;
+}
+
+table.dataTable thead th {
+    background: #f8fafc;
+    color: var(--text);
+    font-weight: 700;
+    border-bottom: 2px solid var(--border) !important;
+}
+
+@media (max-width: 900px) {
+    .charts-container {
+        grid-template-columns: 1fr;
+    }
+    body {
+        padding: 20px;
+    }
+    .header {
+        padding: 28px;
+    }
+}
 
 </style>
-
-
 </head>
-
-
-
 <body>
 
-
-
 <div class="header">
-
-<h1>
-🗺️ GeoAudit
-</h1>
-
-<p>
-Plateforme d'audit qualité des données spatiales
-</p>
-
-
-<p>
-Rapport généré le : 12/07/2026 15:09
-</p>
-
-
+    <div class="header-left">
+        <h1>🗺️ GeoAudit</h1>
+        <p>Plateforme d'audit qualité des données spatiales</p>
+    </div>
+    <div class="header-right">
+        <div class="badge-live">● Rapport généré</div>
+        <div>12/07/2026 18:27</div>
+    </div>
 </div>
-
-
-
 
 <div class="section">
-
-
-<h2>
-📊 Indicateurs globaux
-</h2>
-
-
-
-<div class="kpi-container">
-
-
-<div class="kpi">
-
-<h2>
-2
-</h2>
-
-<p>
-Couches auditées
-</p>
-
-</div>
-
-
-
-<div class="kpi">
-
-<h2>
-60.71 %
-</h2>
-
-<p>
-Score moyen
-</p>
-
-</div>
-
-
-
-<div class="kpi">
-
-<h2>
-32
-</h2>
-
-<p>
-Contrôles exécutés
-</p>
-
-</div>
-
-
-
-<div class="kpi">
-
-<h2>
-2
-</h2>
-
-<p>
-Erreurs détectées
-</p>
-
-</div>
-
-
-</div>
-
-</div>
-
-
-
-
-
-<div class="section">
-
-
-<h2>
-🎯 Qualité par couche
-</h2>
-
-
-
-<div class="layer-container">
-
-
-
-        <div class="layer-card">
-
-            <h3>communes_dile_de_france_au_01_janvier</h3>
-
-            <div class="score">
-                60.71 %
+    <div class="section-title">📊 Indicateurs globaux</div>
+    <div class="kpi-container">
+        <div class="kpi">
+            <div class="kpi-icon blue">🗂️</div>
+            <div class="kpi-body">
+                <h2>3</h2>
+                <p>Couches auditées</p>
             </div>
-
-
-            <div class="progress">
-
-                <div
-                class="progress-bar"
-                style="
-                width:60.71%;
-                background:#f59e0b;
-                ">
-                </div>
-
-            </div>
-
-
-            <span
-            class="badge"
-            style="
-            background:#f59e0b;
-            ">
-
-            MOYEN
-
-            </span>
-
-
         </div>
-
-        
-
-        <div class="layer-card">
-
-            <h3>iris</h3>
-
-            <div class="score">
-                60.71 %
+        <div class="kpi">
+            <div class="kpi-icon green">✅</div>
+            <div class="kpi-body">
+                <h2>60.71 %</h2>
+                <p>Score moyen sur la qualité des données</p>
             </div>
-
-
-            <div class="progress">
-
-                <div
-                class="progress-bar"
-                style="
-                width:60.71%;
-                background:#f59e0b;
-                ">
-                </div>
-
-            </div>
-
-
-            <span
-            class="badge"
-            style="
-            background:#f59e0b;
-            ">
-
-            MOYEN
-
-            </span>
-
-
         </div>
-
-        
-
+        <div class="kpi">
+            <div class="kpi-icon amber">🔍</div>
+            <div class="kpi-body">
+                <h2>48</h2>
+                <p>Contrôles exécutés</p>
+            </div>
+        </div>
+        <div class="kpi">
+            <div class="kpi-icon red">⚠️</div>
+            <div class="kpi-body">
+                <h2>3</h2>
+                <p>Erreurs détectées (6.2 %)</p>
+            </div>
+        </div>
+    </div>
 </div>
-
-
-</div>
-
-
-
-
 
 <div class="section">
+    <div class="section-title">📈 Vue d'ensemble</div>
+    <div class="charts-container">
+        <div class="chart-card">
+            <h4>Répartition par niveau de qualité</h4>
+            <div class="chart-wrapper">
+                <canvas id="distributionChart"></canvas>
+            </div>
+        </div>
+        <div class="chart-card">
+            <h4>Score par couche</h4>
+            <div class="chart-wrapper">
+                <canvas id="layersChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
 
+<div class="section">
+    <div class="section-title">
+        🎯 Qualité par couche
+        <span class="count">3 couches</span>
+    </div>
+    <div class="filters">
+        <button class="filter-btn active" data-filter="ALL">Toutes</button>
+        <button class="filter-btn" data-filter="EXCELLENT">Excellent</button>
+        <button class="filter-btn" data-filter="BON">Bon</button>
+        <button class="filter-btn" data-filter="MOYEN">Moyen</button>
+        <button class="filter-btn" data-filter="CRITIQUE">Critique</button>
+    </div>
+    <div class="layer-container" id="layerContainer">
+        
+        <div class="layer-card" data-level="MOYEN">
+            <div class="layer-card-top">
+                <h3>communes_dile_de_france_au_01_janvier</h3>
+                <span class="badge" style="background:#f59e0b;">MOYEN</span>
+            </div>
+            <div class="score" style="color:#f59e0b;">60.71 %</div>
+            <div class="progress">
+                <div class="progress-bar" style="width:60.71%; background:#f59e0b;"></div>
+            </div>
+        </div>
+        
+        <div class="layer-card" data-level="MOYEN">
+            <div class="layer-card-top">
+                <h3>iris</h3>
+                <span class="badge" style="background:#f59e0b;">MOYEN</span>
+            </div>
+            <div class="score" style="color:#f59e0b;">60.71 %</div>
+            <div class="progress">
+                <div class="progress-bar" style="width:60.71%; background:#f59e0b;"></div>
+            </div>
+        </div>
+        
+        <div class="layer-card" data-level="MOYEN">
+            <div class="layer-card-top">
+                <h3>velib_velos_et_bornes_disponibilite_temps_reel</h3>
+                <span class="badge" style="background:#f59e0b;">MOYEN</span>
+            </div>
+            <div class="score" style="color:#f59e0b;">60.71 %</div>
+            <div class="progress">
+                <div class="progress-bar" style="width:60.71%; background:#f59e0b;"></div>
+            </div>
+        </div>
+        
+    </div>
+</div>
 
-<h2>
-🔎 Détails des contrôles
-</h2>
-
-
-
-<table border="1" class="dataframe display" id="auditTable">
+<div class="section">
+    <div class="section-title">
+        🔎 Détails des contrôles
+        <span class="count">48 lignes</span>
+    </div>
+    <div class="table-card">
+        <table border="1" class="dataframe display" id="auditTable">
   <thead>
     <tr style="text-align: right;">
       <th>rule_code</th>
@@ -430,7 +459,7 @@ Erreurs détectées
       <td>OK</td>
       <td>0</td>
       <td>Nombre de géométries invalides</td>
-      <td>2026-07-12 15:09:16.165928</td>
+      <td>2026-07-12 18:27:29.290239</td>
     </tr>
     <tr>
       <td>G002</td>
@@ -439,7 +468,7 @@ Erreurs détectées
       <td>OK</td>
       <td>0</td>
       <td>Nombre de géométries vides</td>
-      <td>2026-07-12 15:09:16.165928</td>
+      <td>2026-07-12 18:27:29.290239</td>
     </tr>
     <tr>
       <td>G003</td>
@@ -448,7 +477,7 @@ Erreurs détectées
       <td>ERROR</td>
       <td>1287</td>
       <td>Système de coordonnées différent de EPSG:2154</td>
-      <td>2026-07-12 15:09:16.165928</td>
+      <td>2026-07-12 18:27:29.290239</td>
     </tr>
     <tr>
       <td>G004</td>
@@ -457,7 +486,7 @@ Erreurs détectées
       <td>INFO</td>
       <td>1287</td>
       <td>POLYGON</td>
-      <td>2026-07-12 15:09:16.165928</td>
+      <td>2026-07-12 18:27:29.290239</td>
     </tr>
     <tr>
       <td>G005</td>
@@ -466,7 +495,7 @@ Erreurs détectées
       <td>INFO</td>
       <td>1287</td>
       <td>Nombre total d entités</td>
-      <td>2026-07-12 15:09:16.165928</td>
+      <td>2026-07-12 18:27:29.290239</td>
     </tr>
     <tr>
       <td>G006</td>
@@ -475,7 +504,7 @@ Erreurs détectées
       <td>OK</td>
       <td>0</td>
       <td>Entités sans géométrie</td>
-      <td>2026-07-12 15:09:16.165928</td>
+      <td>2026-07-12 18:27:29.290239</td>
     </tr>
     <tr>
       <td>G007</td>
@@ -484,7 +513,7 @@ Erreurs détectées
       <td>OK</td>
       <td>0</td>
       <td>Géométries identiques détectées</td>
-      <td>2026-07-12 15:09:16.165928</td>
+      <td>2026-07-12 18:27:29.290239</td>
     </tr>
     <tr>
       <td>G008</td>
@@ -493,7 +522,7 @@ Erreurs détectées
       <td>INFO</td>
       <td>10</td>
       <td>Nombre de colonnes attributaires</td>
-      <td>2026-07-12 15:09:16.165928</td>
+      <td>2026-07-12 18:27:29.290239</td>
     </tr>
     <tr>
       <td>G009</td>
@@ -502,7 +531,7 @@ Erreurs détectées
       <td>INFO</td>
       <td>1287</td>
       <td>Nombre de lignes avec valeurs NULL</td>
-      <td>2026-07-12 15:09:16.165928</td>
+      <td>2026-07-12 18:27:29.290239</td>
     </tr>
     <tr>
       <td>G010</td>
@@ -511,7 +540,7 @@ Erreurs détectées
       <td>INFO</td>
       <td>15923</td>
       <td>Nombre total de sommets</td>
-      <td>2026-07-12 15:09:16.165928</td>
+      <td>2026-07-12 18:27:29.290239</td>
     </tr>
     <tr>
       <td>G011</td>
@@ -520,7 +549,7 @@ Erreurs détectées
       <td>INFO</td>
       <td>1</td>
       <td>BOX(1.447279504766019 48.120541543740536,3.555686958558566 49.2371907073631)</td>
-      <td>2026-07-12 15:09:16.165928</td>
+      <td>2026-07-12 18:27:29.290239</td>
     </tr>
     <tr>
       <td>G012</td>
@@ -529,7 +558,7 @@ Erreurs détectées
       <td>INFO</td>
       <td>0</td>
       <td>Nombre de géométries multiparties</td>
-      <td>2026-07-12 15:09:16.165928</td>
+      <td>2026-07-12 18:27:29.290239</td>
     </tr>
     <tr>
       <td>G013</td>
@@ -538,7 +567,7 @@ Erreurs détectées
       <td>OK</td>
       <td>0</td>
       <td>Polygones avec surface nulle</td>
-      <td>2026-07-12 15:09:16.165928</td>
+      <td>2026-07-12 18:27:29.290239</td>
     </tr>
     <tr>
       <td>G014</td>
@@ -547,7 +576,7 @@ Erreurs détectées
       <td>OK</td>
       <td>0</td>
       <td>Lignes avec longueur nulle</td>
-      <td>2026-07-12 15:09:16.165928</td>
+      <td>2026-07-12 18:27:29.290239</td>
     </tr>
     <tr>
       <td>G015</td>
@@ -556,7 +585,7 @@ Erreurs détectées
       <td>INFO</td>
       <td>55</td>
       <td>Nombre maximum de sommets dans une géométrie</td>
-      <td>2026-07-12 15:09:16.165928</td>
+      <td>2026-07-12 18:27:29.290239</td>
     </tr>
     <tr>
       <td>G016</td>
@@ -565,7 +594,7 @@ Erreurs détectées
       <td>OK</td>
       <td>0</td>
       <td>Vérification de l emprise spatiale</td>
-      <td>2026-07-12 15:09:16.165928</td>
+      <td>2026-07-12 18:27:29.290239</td>
     </tr>
     <tr>
       <td>G001</td>
@@ -574,7 +603,7 @@ Erreurs détectées
       <td>OK</td>
       <td>0</td>
       <td>Nombre de géométries invalides</td>
-      <td>2026-07-12 15:09:16.334656</td>
+      <td>2026-07-12 18:27:29.549495</td>
     </tr>
     <tr>
       <td>G002</td>
@@ -583,7 +612,7 @@ Erreurs détectées
       <td>OK</td>
       <td>0</td>
       <td>Nombre de géométries vides</td>
-      <td>2026-07-12 15:09:16.334656</td>
+      <td>2026-07-12 18:27:29.549495</td>
     </tr>
     <tr>
       <td>G003</td>
@@ -592,7 +621,7 @@ Erreurs détectées
       <td>ERROR</td>
       <td>19</td>
       <td>Système de coordonnées différent de EPSG:2154</td>
-      <td>2026-07-12 15:09:16.334656</td>
+      <td>2026-07-12 18:27:29.549495</td>
     </tr>
     <tr>
       <td>G004</td>
@@ -601,7 +630,7 @@ Erreurs détectées
       <td>INFO</td>
       <td>19</td>
       <td>POLYGON</td>
-      <td>2026-07-12 15:09:16.334656</td>
+      <td>2026-07-12 18:27:29.549495</td>
     </tr>
     <tr>
       <td>G005</td>
@@ -610,7 +639,7 @@ Erreurs détectées
       <td>INFO</td>
       <td>19</td>
       <td>Nombre total d entités</td>
-      <td>2026-07-12 15:09:16.334656</td>
+      <td>2026-07-12 18:27:29.549495</td>
     </tr>
     <tr>
       <td>G006</td>
@@ -619,7 +648,7 @@ Erreurs détectées
       <td>OK</td>
       <td>0</td>
       <td>Entités sans géométrie</td>
-      <td>2026-07-12 15:09:16.334656</td>
+      <td>2026-07-12 18:27:29.549495</td>
     </tr>
     <tr>
       <td>G007</td>
@@ -628,7 +657,7 @@ Erreurs détectées
       <td>OK</td>
       <td>0</td>
       <td>Géométries identiques détectées</td>
-      <td>2026-07-12 15:09:16.334656</td>
+      <td>2026-07-12 18:27:29.549495</td>
     </tr>
     <tr>
       <td>G008</td>
@@ -637,7 +666,7 @@ Erreurs détectées
       <td>INFO</td>
       <td>10</td>
       <td>Nombre de colonnes attributaires</td>
-      <td>2026-07-12 15:09:16.334656</td>
+      <td>2026-07-12 18:27:29.549495</td>
     </tr>
     <tr>
       <td>G009</td>
@@ -646,7 +675,7 @@ Erreurs détectées
       <td>INFO</td>
       <td>19</td>
       <td>Nombre de lignes avec valeurs NULL</td>
-      <td>2026-07-12 15:09:16.334656</td>
+      <td>2026-07-12 18:27:29.549495</td>
     </tr>
     <tr>
       <td>G010</td>
@@ -655,7 +684,7 @@ Erreurs détectées
       <td>INFO</td>
       <td>514</td>
       <td>Nombre total de sommets</td>
-      <td>2026-07-12 15:09:16.334656</td>
+      <td>2026-07-12 18:27:29.549495</td>
     </tr>
     <tr>
       <td>G011</td>
@@ -664,7 +693,7 @@ Erreurs détectées
       <td>INFO</td>
       <td>1</td>
       <td>BOX(2.247561180577504 48.91270668647975,2.328449672778644 48.9510880950149)</td>
-      <td>2026-07-12 15:09:16.334656</td>
+      <td>2026-07-12 18:27:29.549495</td>
     </tr>
     <tr>
       <td>G012</td>
@@ -673,7 +702,7 @@ Erreurs détectées
       <td>INFO</td>
       <td>0</td>
       <td>Nombre de géométries multiparties</td>
-      <td>2026-07-12 15:09:16.334656</td>
+      <td>2026-07-12 18:27:29.549495</td>
     </tr>
     <tr>
       <td>G013</td>
@@ -682,7 +711,7 @@ Erreurs détectées
       <td>OK</td>
       <td>0</td>
       <td>Polygones avec surface nulle</td>
-      <td>2026-07-12 15:09:16.334656</td>
+      <td>2026-07-12 18:27:29.549495</td>
     </tr>
     <tr>
       <td>G014</td>
@@ -691,7 +720,7 @@ Erreurs détectées
       <td>OK</td>
       <td>0</td>
       <td>Lignes avec longueur nulle</td>
-      <td>2026-07-12 15:09:16.334656</td>
+      <td>2026-07-12 18:27:29.549495</td>
     </tr>
     <tr>
       <td>G015</td>
@@ -700,7 +729,7 @@ Erreurs détectées
       <td>INFO</td>
       <td>106</td>
       <td>Nombre maximum de sommets dans une géométrie</td>
-      <td>2026-07-12 15:09:16.334656</td>
+      <td>2026-07-12 18:27:29.549495</td>
     </tr>
     <tr>
       <td>G016</td>
@@ -709,64 +738,245 @@ Erreurs détectées
       <td>OK</td>
       <td>0</td>
       <td>Vérification de l emprise spatiale</td>
-      <td>2026-07-12 15:09:16.334656</td>
+      <td>2026-07-12 18:27:29.549495</td>
+    </tr>
+    <tr>
+      <td>G001</td>
+      <td>GEOMETRY_VALID</td>
+      <td>velib_velos_et_bornes_disponibilite_temps_reel</td>
+      <td>OK</td>
+      <td>0</td>
+      <td>Nombre de géométries invalides</td>
+      <td>2026-07-12 18:27:29.706057</td>
+    </tr>
+    <tr>
+      <td>G002</td>
+      <td>EMPTY_GEOMETRY</td>
+      <td>velib_velos_et_bornes_disponibilite_temps_reel</td>
+      <td>OK</td>
+      <td>0</td>
+      <td>Nombre de géométries vides</td>
+      <td>2026-07-12 18:27:29.706057</td>
+    </tr>
+    <tr>
+      <td>G003</td>
+      <td>SRID_CHECK</td>
+      <td>velib_velos_et_bornes_disponibilite_temps_reel</td>
+      <td>ERROR</td>
+      <td>1517</td>
+      <td>Système de coordonnées différent de EPSG:2154</td>
+      <td>2026-07-12 18:27:29.706057</td>
+    </tr>
+    <tr>
+      <td>G004</td>
+      <td>GEOMETRY_TYPE</td>
+      <td>velib_velos_et_bornes_disponibilite_temps_reel</td>
+      <td>INFO</td>
+      <td>1517</td>
+      <td>POINT</td>
+      <td>2026-07-12 18:27:29.706057</td>
+    </tr>
+    <tr>
+      <td>G005</td>
+      <td>ENTITY_COUNT</td>
+      <td>velib_velos_et_bornes_disponibilite_temps_reel</td>
+      <td>INFO</td>
+      <td>1517</td>
+      <td>Nombre total d entités</td>
+      <td>2026-07-12 18:27:29.706057</td>
+    </tr>
+    <tr>
+      <td>G006</td>
+      <td>NULL_GEOMETRY</td>
+      <td>velib_velos_et_bornes_disponibilite_temps_reel</td>
+      <td>OK</td>
+      <td>0</td>
+      <td>Entités sans géométrie</td>
+      <td>2026-07-12 18:27:29.706057</td>
+    </tr>
+    <tr>
+      <td>G007</td>
+      <td>DUPLICATE_GEOMETRY</td>
+      <td>velib_velos_et_bornes_disponibilite_temps_reel</td>
+      <td>OK</td>
+      <td>0</td>
+      <td>Géométries identiques détectées</td>
+      <td>2026-07-12 18:27:29.706057</td>
+    </tr>
+    <tr>
+      <td>G008</td>
+      <td>COLUMN_COUNT</td>
+      <td>velib_velos_et_bornes_disponibilite_temps_reel</td>
+      <td>INFO</td>
+      <td>15</td>
+      <td>Nombre de colonnes attributaires</td>
+      <td>2026-07-12 18:27:29.706057</td>
+    </tr>
+    <tr>
+      <td>G009</td>
+      <td>NULL_ATTRIBUTES</td>
+      <td>velib_velos_et_bornes_disponibilite_temps_reel</td>
+      <td>INFO</td>
+      <td>1517</td>
+      <td>Nombre de lignes avec valeurs NULL</td>
+      <td>2026-07-12 18:27:29.706057</td>
+    </tr>
+    <tr>
+      <td>G010</td>
+      <td>VERTEX_COUNT</td>
+      <td>velib_velos_et_bornes_disponibilite_temps_reel</td>
+      <td>INFO</td>
+      <td>1517</td>
+      <td>Nombre total de sommets</td>
+      <td>2026-07-12 18:27:29.706057</td>
+    </tr>
+    <tr>
+      <td>G011</td>
+      <td>SPATIAL_EXTENT</td>
+      <td>velib_velos_et_bornes_disponibilite_temps_reel</td>
+      <td>INFO</td>
+      <td>1</td>
+      <td>BOX(2.1655421457014 48.743385629116,2.538242116570473 48.95756799268)</td>
+      <td>2026-07-12 18:27:29.706057</td>
+    </tr>
+    <tr>
+      <td>G012</td>
+      <td>MULTIPART_GEOMETRY</td>
+      <td>velib_velos_et_bornes_disponibilite_temps_reel</td>
+      <td>INFO</td>
+      <td>0</td>
+      <td>Nombre de géométries multiparties</td>
+      <td>2026-07-12 18:27:29.706057</td>
+    </tr>
+    <tr>
+      <td>G013</td>
+      <td>ZERO_AREA</td>
+      <td>velib_velos_et_bornes_disponibilite_temps_reel</td>
+      <td>OK</td>
+      <td>0</td>
+      <td>Polygones avec surface nulle</td>
+      <td>2026-07-12 18:27:29.706057</td>
+    </tr>
+    <tr>
+      <td>G014</td>
+      <td>ZERO_LENGTH</td>
+      <td>velib_velos_et_bornes_disponibilite_temps_reel</td>
+      <td>OK</td>
+      <td>0</td>
+      <td>Lignes avec longueur nulle</td>
+      <td>2026-07-12 18:27:29.706057</td>
+    </tr>
+    <tr>
+      <td>G015</td>
+      <td>GEOMETRY_COMPLEXITY</td>
+      <td>velib_velos_et_bornes_disponibilite_temps_reel</td>
+      <td>INFO</td>
+      <td>1</td>
+      <td>Nombre maximum de sommets dans une géométrie</td>
+      <td>2026-07-12 18:27:29.706057</td>
+    </tr>
+    <tr>
+      <td>G016</td>
+      <td>EMPTY_EXTENT</td>
+      <td>velib_velos_et_bornes_disponibilite_temps_reel</td>
+      <td>OK</td>
+      <td>0</td>
+      <td>Vérification de l emprise spatiale</td>
+      <td>2026-07-12 18:27:29.706057</td>
     </tr>
   </tbody>
 </table>
-
-
+    </div>
 </div>
 
-
-
-
-
-<script
-src="https://code.jquery.com/jquery-3.7.1.min.js">
-</script>
-
-
-
-<script
-src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js">
-</script>
-
-
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
 
 <script>
 
+const distributionData = {"labels": ["EXCELLENT", "BON", "MOYEN", "CRITIQUE"], "values": [0, 0, 3, 0], "colors": ["#16a34a", "#22c55e", "#f59e0b", "#dc2626"]};
+const layersData = {"labels": ["communes_dile_de_france_au_01_janvier", "iris", "velib_velos_et_bornes_disponibilite_temps_reel"], "values": [60.71, 60.71, 60.71], "colors": ["#f59e0b", "#f59e0b", "#f59e0b"]};
 
-$(document).ready(function(){
-
-
-$('#auditTable').DataTable({
-
-    pageLength:10,
-
-    language:{
-
-        search:"Rechercher :",
-
-        lengthMenu:
-        "Afficher _MENU_ lignes",
-
-        info:
-        "Affichage _START_ à _END_ sur _TOTAL_ résultats"
-
+// Donut chart : répartition par niveau
+new Chart(document.getElementById('distributionChart'), {
+    type: 'doughnut',
+    data: {
+        labels: distributionData.labels,
+        datasets: [{
+            data: distributionData.values,
+            backgroundColor: distributionData.colors,
+            borderWidth: 3,
+            borderColor: '#ffffff'
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        cutout: '65%',
+        plugins: {
+            legend: {
+                position: 'bottom',
+                labels: { font: { family: 'Inter', size: 12, weight: '600' }, padding: 16 }
+            }
+        }
     }
-
 });
 
-
+// Bar chart horizontal : score par couche
+new Chart(document.getElementById('layersChart'), {
+    type: 'bar',
+    data: {
+        labels: layersData.labels,
+        datasets: [{
+            label: 'Score qualité (%)',
+            data: layersData.values,
+            backgroundColor: layersData.colors,
+            borderRadius: 6,
+            maxBarThickness: 22
+        }]
+    },
+    options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+            x: { min: 0, max: 100, grid: { color: '#f1f5f9' } },
+            y: { grid: { display: false } }
+        },
+        plugins: {
+            legend: { display: false }
+        }
+    }
 });
 
+// DataTable
+$(document).ready(function() {
+    $('#auditTable').DataTable({
+        pageLength: 10,
+        language: {
+            search: "Rechercher :",
+            lengthMenu: "Afficher _MENU_ lignes",
+            info: "Affichage _START_ à _END_ sur _TOTAL_ résultats",
+            paginate: { previous: "Précédent", next: "Suivant" },
+            zeroRecords: "Aucun résultat trouvé"
+        }
+    });
+});
+
+// Filtres des cartes de couches
+document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const filter = btn.dataset.filter;
+        document.querySelectorAll('.layer-card').forEach(card => {
+            const match = filter === 'ALL' || card.dataset.level === filter;
+            card.style.display = match ? '' : 'none';
+        });
+    });
+});
 
 </script>
 
-
-
 </body>
-
-
 </html>
-

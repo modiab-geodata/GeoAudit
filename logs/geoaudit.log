@@ -10,3 +10,85 @@
 2026-07-12 15:09:16 | INFO | Rapport Excel généré
 2026-07-12 15:09:17 | INFO | Rapport HTML généré
 2026-07-12 15:09:17 | INFO | GeoAudit terminé avec succès - 2 couches analysées
+2026-07-12 17:59:59 | INFO | ========== Démarrage GeoAudit ==========
+2026-07-12 17:59:59 | INFO | Connexion PostgreSQL/PostGIS réussie
+2026-07-12 17:59:59 | INFO | Anciennes sorties quality_results supprimées
+2026-07-12 17:59:59 | INFO | Couches spatiales détectées : ['communes_dile_de_france_au_01_janvier', 'iris']
+2026-07-12 17:59:59 | INFO | Début audit couche : communes_dile_de_france_au_01_janvier
+2026-07-12 18:00:00 | INFO | Audit terminé : communes_dile_de_france_au_01_janvier
+2026-07-12 18:00:00 | INFO | Début audit couche : iris
+2026-07-12 18:00:00 | INFO | Audit terminé : iris
+2026-07-12 18:00:00 | INFO | Résumé des audits généré
+2026-07-12 18:00:01 | INFO | Rapport Excel généré
+2026-07-12 18:00:01 | INFO | Rapport HTML généré
+2026-07-12 18:00:01 | INFO | GeoAudit terminé avec succès - 2 couches analysées
+2026-07-12 18:05:29 | INFO | ========== Démarrage GeoAudit ==========
+2026-07-12 18:05:29 | INFO | Connexion PostgreSQL/PostGIS réussie
+2026-07-12 18:05:29 | INFO | Anciennes sorties quality_results supprimées
+2026-07-12 18:05:29 | INFO | Couches spatiales détectées : ['communes_dile_de_france_au_01_janvier', 'iris', 'velib_velos_et_bornes_disponibilite_temps_reel']
+2026-07-12 18:05:29 | INFO | Début audit couche : communes_dile_de_france_au_01_janvier
+2026-07-12 18:05:30 | INFO | Audit terminé : communes_dile_de_france_au_01_janvier
+2026-07-12 18:05:30 | INFO | Début audit couche : iris
+2026-07-12 18:05:30 | INFO | Audit terminé : iris
+2026-07-12 18:05:30 | INFO | Début audit couche : velib_velos_et_bornes_disponibilite_temps_reel
+2026-07-12 18:05:30 | INFO | Audit terminé : velib_velos_et_bornes_disponibilite_temps_reel
+2026-07-12 18:05:30 | INFO | Résumé des audits généré
+2026-07-12 18:05:31 | INFO | Rapport Excel généré
+2026-07-12 18:05:31 | INFO | Rapport HTML généré
+2026-07-12 18:05:31 | INFO | GeoAudit terminé avec succès - 3 couches analysées
+2026-07-12 18:17:40 | INFO | ========== Démarrage GeoAudit ==========
+2026-07-12 18:17:41 | INFO | Connexion PostgreSQL/PostGIS réussie
+2026-07-12 18:17:41 | INFO | Anciennes sorties quality_results supprimées
+2026-07-12 18:17:41 | INFO | Couches spatiales détectées : ['communes_dile_de_france_au_01_janvier', 'iris', 'velib_velos_et_bornes_disponibilite_temps_reel']
+2026-07-12 18:17:41 | INFO | Début audit couche : communes_dile_de_france_au_01_janvier
+2026-07-12 18:17:41 | INFO | Audit terminé : communes_dile_de_france_au_01_janvier
+2026-07-12 18:17:41 | INFO | Début audit couche : iris
+2026-07-12 18:17:41 | INFO | Audit terminé : iris
+2026-07-12 18:17:41 | INFO | Début audit couche : velib_velos_et_bornes_disponibilite_temps_reel
+2026-07-12 18:17:41 | INFO | Audit terminé : velib_velos_et_bornes_disponibilite_temps_reel
+2026-07-12 18:17:41 | INFO | Résumé des audits généré
+2026-07-12 18:17:42 | INFO | Rapport Excel généré
+2026-07-12 18:17:42 | INFO | Rapport HTML généré
+2026-07-12 18:17:42 | INFO | GeoAudit terminé avec succès - 3 couches analysées
+2026-07-12 18:23:49 | INFO | ========== Démarrage GeoAudit ==========
+2026-07-12 18:23:49 | INFO | Connexion PostgreSQL/PostGIS réussie
+2026-07-12 18:23:49 | INFO | Anciennes sorties quality_results supprimées
+2026-07-12 18:23:49 | INFO | Couches spatiales détectées : ['communes_dile_de_france_au_01_janvier', 'iris', 'velib_velos_et_bornes_disponibilite_temps_reel']
+2026-07-12 18:23:49 | INFO | Début audit couche : communes_dile_de_france_au_01_janvier
+2026-07-12 18:23:49 | INFO | Audit terminé : communes_dile_de_france_au_01_janvier
+2026-07-12 18:23:49 | INFO | Début audit couche : iris
+2026-07-12 18:23:50 | INFO | Audit terminé : iris
+2026-07-12 18:23:50 | INFO | Début audit couche : velib_velos_et_bornes_disponibilite_temps_reel
+2026-07-12 18:23:50 | INFO | Audit terminé : velib_velos_et_bornes_disponibilite_temps_reel
+2026-07-12 18:23:50 | INFO | Résumé des audits généré
+2026-07-12 18:23:50 | INFO | Rapport Excel généré
+2026-07-12 18:23:51 | INFO | Rapport HTML généré
+2026-07-12 18:23:51 | INFO | GeoAudit terminé avec succès - 3 couches analysées
+2026-07-12 18:24:34 | INFO | ========== Démarrage GeoAudit ==========
+2026-07-12 18:24:35 | INFO | Connexion PostgreSQL/PostGIS réussie
+2026-07-12 18:24:35 | INFO | Anciennes sorties quality_results supprimées
+2026-07-12 18:24:35 | INFO | Couches spatiales détectées : ['communes_dile_de_france_au_01_janvier', 'iris', 'velib_velos_et_bornes_disponibilite_temps_reel']
+2026-07-12 18:24:35 | INFO | Début audit couche : communes_dile_de_france_au_01_janvier
+2026-07-12 18:24:35 | INFO | Audit terminé : communes_dile_de_france_au_01_janvier
+2026-07-12 18:24:35 | INFO | Début audit couche : iris
+2026-07-12 18:24:35 | INFO | Audit terminé : iris
+2026-07-12 18:24:35 | INFO | Début audit couche : velib_velos_et_bornes_disponibilite_temps_reel
+2026-07-12 18:24:35 | INFO | Audit terminé : velib_velos_et_bornes_disponibilite_temps_reel
+2026-07-12 18:24:36 | INFO | Résumé des audits généré
+2026-07-12 18:24:36 | INFO | Rapport Excel généré
+2026-07-12 18:24:36 | INFO | Rapport HTML généré
+2026-07-12 18:24:36 | INFO | GeoAudit terminé avec succès - 3 couches analysées
+2026-07-12 18:27:28 | INFO | ========== Démarrage GeoAudit ==========
+2026-07-12 18:27:28 | INFO | Connexion PostgreSQL/PostGIS réussie
+2026-07-12 18:27:29 | INFO | Anciennes sorties quality_results supprimées
+2026-07-12 18:27:29 | INFO | Couches spatiales détectées : ['communes_dile_de_france_au_01_janvier', 'iris', 'velib_velos_et_bornes_disponibilite_temps_reel']
+2026-07-12 18:27:29 | INFO | Début audit couche : communes_dile_de_france_au_01_janvier
+2026-07-12 18:27:29 | INFO | Audit terminé : communes_dile_de_france_au_01_janvier
+2026-07-12 18:27:29 | INFO | Début audit couche : iris
+2026-07-12 18:27:29 | INFO | Audit terminé : iris
+2026-07-12 18:27:29 | INFO | Début audit couche : velib_velos_et_bornes_disponibilite_temps_reel
+2026-07-12 18:27:29 | INFO | Audit terminé : velib_velos_et_bornes_disponibilite_temps_reel
+2026-07-12 18:27:29 | INFO | Résumé des audits généré
+2026-07-12 18:27:30 | INFO | Rapport Excel généré
+2026-07-12 18:27:30 | INFO | Rapport HTML généré
+2026-07-12 18:27:30 | INFO | GeoAudit terminé avec succès - 3 couches analysées

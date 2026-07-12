@@ -1,13 +1,9 @@
 from database import get_engine
 from sqlalchemy import text
 
-
-
 def get_audit_summary():
 
     engine = get_engine()
-
-
     query = """
     SELECT
         table_name,
@@ -28,23 +24,15 @@ def get_audit_summary():
                 ELSE 0
             END
         ) AS rules_error
-
     FROM quality_results
-
     GROUP BY table_name
-
     ORDER BY table_name;
     """
-
-
     with engine.connect() as connection:
 
         result = connection.execute(
             text(query)
         )
 
-
         summary = result.fetchall()
-
-
     return summary

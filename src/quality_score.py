@@ -3,11 +3,9 @@ from sqlalchemy import text
 import pandas as pd
 
 
-
 def calculate_quality_score():
 
     engine = get_engine()
-
 
     query = """
 
@@ -16,8 +14,6 @@ def calculate_quality_score():
         qr.table_name,
 
         COUNT(*) AS total_rules,
-
-
         SUM(
             CASE 
             WHEN qr.status='OK'
@@ -25,10 +21,7 @@ def calculate_quality_score():
             ELSE 0
             END
         ) AS obtained_points,
-
-
         SUM(qr.weight) AS max_points,
-
 
         SUM(
             CASE
@@ -37,7 +30,6 @@ def calculate_quality_score():
             ELSE 0
             END
         ) AS error_rules
-
 
     FROM
     (
@@ -55,13 +47,11 @@ def calculate_quality_score():
 
     ) qr
 
-
     GROUP BY qr.table_name
 
     ORDER BY qr.table_name;
 
     """
-
 
     with engine.connect() as connection:
 
@@ -69,7 +59,6 @@ def calculate_quality_score():
             text(query),
             connection
         )
-
 
     df["score_quality"] = (
         df["obtained_points"]
