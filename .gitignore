@@ -1,16 +1,17 @@
-# Variables d'environnement
+# Données SIG
+data/raw/
+data/processed/
+
+# Environnement Python
+.venv/
 .env
 
-# Environnement virtuel
-.venv/
+# Rapports générés
+reports/
 
-# Cache Python
+# Logs
+logs/
+
+# Python
 __pycache__/
 *.pyc
-
-# Rapports générés
-reports/*.html
-reports/*.xlsx
-
-# VS Code
-.vscode/
