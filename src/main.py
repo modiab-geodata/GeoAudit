@@ -6,7 +6,8 @@ from database import (
 
 from report import (
     generate_excel_report,
-    generate_html_report
+    generate_html_report,
+    generate_pdf_report
 )
 
 from quality_check import run_generic_rules
@@ -229,6 +230,12 @@ def main():
 
         logger.info(
             "Rapport HTML généré"
+        )
+
+        generate_pdf_report()
+
+        logger.info(
+            "Rapport PDF généré"
         )
 
     except Exception as e:

@@ -1,3 +1,4 @@
+import json
 from database import get_engine
 from sqlalchemy import text
 import pandas as pd
@@ -5,6 +6,21 @@ from pathlib import Path
 from quality_score import calculate_quality_score
 from quality_results import get_quality_results
 from datetime import datetime
+from reportlab.lib.pagesizes import A4
+from reportlab.lib.units import mm
+from reportlab.lib import colors
+from reportlab.lib.colors import HexColor
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.lib.enums import TA_CENTER
+from reportlab.platypus import (
+    SimpleDocTemplate, Paragraph, Spacer, PageBreak, Table, TableStyle,
+    HRFlowable,
+)
+from reportlab.graphics.shapes import Drawing
+from reportlab.graphics.charts.piecharts import Pie
+from reportlab.graphics.charts.barcharts import HorizontalBarChart
+from reportlab.graphics.charts.legends import Legend
+
 
 REPORT_DIR = Path("reports")
 
@@ -76,9 +92,6 @@ def format_quality_level(row):
         f'{row["quality_level"]}'
         f'</span>'
     )
-
-import json
-from datetime import datetime
 
 
 def generate_html_report():
@@ -676,3 +689,453 @@ document.querySelectorAll('.filter-btn').forEach(btn => {{
         file.write(html)
 
     print(f"Rapport HTML généré : {output}")
+
+
+LEVEL_COLORS = {
+    "EXCELLENT": "#16a34a",
+    "BON": "#22c55e",
+    "MOYEN": "#f59e0b",
+    "CRITIQUE": "#dc2626",
+}
+LEVEL_ORDER = ["EXCELLENT", "BON", "MOYEN", "CRITIQUE"]
+
+
+def _score_color(level):
+    return LEVEL_COLORS.get(level, "#64748b")
+
+
+def _build_pie_drawing(labels, values, colors_hex):
+    """Camembert de répartition des couches par niveau de qualité."""
+    d = Drawing(230, 150)
+
+    pie = Pie()
+    pie.x = 15
+    pie.y = 5
+    pie.width = 130
+    pie.height = 130
+    pie.data = values if sum(values) > 0 else [1] * len(values)
+    pie.labels = None
+    pie.slices.strokeWidth = 1
+    pie.slices.strokeColor = colors.white
+    pie.direction = 'clockwise'
+    for i, c in enumerate(colors_hex):
+        pie.slices[i].fillColor = HexColor(c)
+    d.add(pie)
+
+    legend = Legend()
+    legend.x = 158
+    legend.y = 115
+    legend.dx = 7
+    legend.dy = 7
+    legend.fontName = 'Helvetica'
+    legend.fontSize = 8
+    legend.boxAnchor = 'nw'
+    legend.columnMaximum = 10
+    legend.strokeWidth = 0
+    legend.alignment = 'right'
+    legend.deltay = 14
+    legend.colorNamePairs = [
+        (HexColor(c), f"{l}  ({v})") for l, v, c in zip(labels, values, colors_hex)
+    ]
+    d.add(legend)
+    return d
+
+
+def _build_bar_drawing(labels, values, colors_hex, width_pt):
+    """Diagramme en barres horizontales du score par couche."""
+    row_h = 14
+    height = max(140, len(labels) * row_h + 40)
+
+    d = Drawing(width_pt, height)
+    bc = HorizontalBarChart()
+    bc.x = 130
+    bc.y = 20
+    bc.width = width_pt - 150
+    bc.height = height - 35
+    bc.data = [values]
+    bc.categoryAxis.categoryNames = [
+        (lbl if len(lbl) <= 26 else lbl[:24] + "…") for lbl in labels
+    ]
+    bc.categoryAxis.labels.fontName = 'Helvetica'
+    bc.categoryAxis.labels.fontSize = 6.5
+    bc.valueAxis.valueMin = 0
+    bc.valueAxis.valueMax = 100
+    bc.valueAxis.valueStep = 20
+    bc.valueAxis.labels.fontSize = 7
+    bc.barLabels.fontName = 'Helvetica'
+    bc.barLabels.fontSize = 6
+    bc.barLabelFormat = '%0.0f%%'
+    bc.barLabels.nudge = 8
+    bc.bars.strokeWidth = 0
+    for i, c in enumerate(colors_hex):
+        bc.bars[(0, i)].fillColor = HexColor(c)
+    d.add(bc)
+    return d
+
+
+def generate_pdf_report(max_detail_rows=1000):
+    """
+    Génère un rapport PDF professionnel : page de garde, résumé exécutif,
+    indicateurs clés, graphiques, tableau de qualité par couche et détail
+    des contrôles.
+
+    max_detail_rows : nombre maximum de lignes affichées dans le tableau de
+    détail (au-delà, une note de troncature est ajoutée pour garder un PDF
+    lisible et raisonnable en taille).
+    """
+
+    REPORT_DIR.mkdir(exist_ok=True)
+
+    details = get_quality_results()
+    summary = calculate_quality_score()
+
+    output = REPORT_DIR / "geoaudit_report.pdf"
+
+    NAVY = HexColor("#0f172a")
+    INDIGO = HexColor("#6366f1")
+    MUTED = HexColor("#64748b")
+    LIGHT_BG = HexColor("#f8fafc")
+    ERROR_BG = HexColor("#fef2f2")
+    BORDER = HexColor("#e2e8f0")
+
+    PAGE_W, PAGE_H = A4
+
+    # ==============================
+    # KPI
+    # ==============================
+
+    nb_layers = summary["table_name"].nunique()
+    average_score = round(summary["score_quality"].mean(), 2)
+    total_controls = len(details)
+    total_errors = len(details[details["status"] == "ERROR"]) if "status" in details.columns else 0
+    error_rate = round((total_errors / total_controls) * 100, 1) if total_controls else 0
+    date_report = datetime.now().strftime("%d/%m/%Y à %H:%M")
+
+    # ==============================
+    # En-tête / pied de page
+    # ==============================
+
+    def draw_cover(canvas, doc):
+        canvas.saveState()
+
+        # Fond blanc (par défaut) — bandeaux fins en haut et en bas pour la
+        # touche de couleur, sans assombrir toute la page.
+        canvas.setFillColor(NAVY)
+        canvas.rect(0, PAGE_H - 7 * mm, PAGE_W, 7 * mm, fill=1, stroke=0)
+        canvas.setFillColor(INDIGO)
+        canvas.rect(0, 0, PAGE_W, 7 * mm, fill=1, stroke=0)
+
+        # Boussole décorative, fine et discrète
+        cx, cy = PAGE_W / 2, PAGE_H - 52 * mm
+        r = 13 * mm
+        canvas.setStrokeColor(HexColor("#c7d2fe"))
+        canvas.setLineWidth(1)
+        canvas.circle(cx, cy, r, stroke=1, fill=0)
+        canvas.circle(cx, cy, r * 0.5, stroke=1, fill=0)
+        canvas.setStrokeColor(INDIGO)
+        canvas.setLineWidth(0.8)
+        canvas.line(cx - r, cy, cx + r, cy)
+        canvas.line(cx, cy - r, cx, cy + r)
+        canvas.setFillColor(INDIGO)
+        canvas.setFont("Helvetica-Bold", 7.5)
+        canvas.drawCentredString(cx, cy + r + 5, "N")
+
+        canvas.restoreState()
+
+    def draw_content_page(canvas, doc):
+        canvas.saveState()
+
+        canvas.setFillColor(NAVY)
+        canvas.rect(0, PAGE_H - 14 * mm, PAGE_W, 14 * mm, fill=1, stroke=0)
+        canvas.setFillColor(colors.white)
+        canvas.setFont("Helvetica-Bold", 10)
+        canvas.drawString(20 * mm, PAGE_H - 9.3 * mm, "GEOAUDIT")
+        canvas.setFont("Helvetica", 8)
+        canvas.setFillColor(HexColor("#cbd5e1"))
+        canvas.drawRightString(
+            PAGE_W - 20 * mm, PAGE_H - 9.3 * mm,
+            "Rapport d'audit qualité des données spatiales"
+        )
+
+        canvas.setStrokeColor(BORDER)
+        canvas.setLineWidth(0.6)
+        canvas.line(20 * mm, 14 * mm, PAGE_W - 20 * mm, 14 * mm)
+        canvas.setFont("Helvetica", 7.5)
+        canvas.setFillColor(MUTED)
+        canvas.drawCentredString(PAGE_W / 2, 10 * mm, f"Généré le {date_report}")
+        page_num = canvas.getPageNumber() - 1
+        canvas.drawRightString(PAGE_W - 20 * mm, 10 * mm, f"Page {page_num}")
+
+        canvas.restoreState()
+
+    # ==============================
+    # Styles
+    # ==============================
+
+    styles = getSampleStyleSheet()
+
+    style_title_cover = ParagraphStyle(
+        'TitleCover', fontName='Helvetica-Bold', fontSize=36,
+        textColor=NAVY, alignment=TA_CENTER, leading=42
+    )
+    style_subtitle_cover = ParagraphStyle(
+        'SubtitleCover', fontName='Helvetica', fontSize=12,
+        textColor=INDIGO, alignment=TA_CENTER, leading=18,
+        spaceBefore=10
+    )
+    style_cover_meta = ParagraphStyle(
+        'CoverMeta', fontName='Helvetica', fontSize=10,
+        textColor=MUTED, alignment=TA_CENTER, leading=17
+    )
+
+    style_h1 = ParagraphStyle(
+        'H1', fontName='Helvetica-Bold', fontSize=17, textColor=NAVY,
+        spaceBefore=4, spaceAfter=12, leading=21
+    )
+    style_h2 = ParagraphStyle(
+        'H2', fontName='Helvetica-Bold', fontSize=12, textColor=NAVY,
+        spaceBefore=14, spaceAfter=8
+    )
+    style_body = ParagraphStyle(
+        'Body', fontName='Helvetica', fontSize=9.5,
+        textColor=HexColor("#334155"), leading=15
+    )
+    style_small = ParagraphStyle(
+        'Small', fontName='Helvetica', fontSize=8, textColor=MUTED,
+        alignment=TA_CENTER, leading=10
+    )
+    style_cell = ParagraphStyle(
+        'Cell', fontName='Helvetica', fontSize=7.5,
+        textColor=HexColor("#1e293b"), leading=9.5
+    )
+    style_cell_bold = ParagraphStyle(
+        'CellBold', fontName='Helvetica-Bold', fontSize=7.5,
+        textColor=colors.white, leading=9.5
+    )
+    style_head_cell = ParagraphStyle(
+        'HeadCell', fontName='Helvetica-Bold', fontSize=8,
+        textColor=colors.white, leading=10
+    )
+
+    def kpi_number_style(color_hex):
+        return ParagraphStyle(
+            f'KpiNum_{color_hex}', fontName='Helvetica-Bold', fontSize=22,
+            textColor=HexColor(color_hex), alignment=TA_CENTER
+        )
+
+    story = []
+
+    # ==============================
+    # Page de garde
+    # ==============================
+
+    story.append(Spacer(1, 56 * mm))
+    story.append(Paragraph("GEOAUDIT", style_title_cover))
+    story.append(Paragraph(
+        "RAPPORT D'AUDIT QUALITÉ DES DONNÉES SPATIALES", style_subtitle_cover
+    ))
+    story.append(Spacer(1, 10 * mm))
+    story.append(HRFlowable(
+        width=60 * mm, thickness=1, color=BORDER, hAlign='CENTER',
+        spaceAfter=10 * mm
+    ))
+    story.append(Paragraph(f"Généré le {date_report}", style_cover_meta))
+    story.append(Paragraph(
+        f"{nb_layers} couches auditées&nbsp;&nbsp;•&nbsp;&nbsp;"
+        f"{total_controls} contrôles exécutés&nbsp;&nbsp;•&nbsp;&nbsp;"
+        f"score moyen {average_score}&nbsp;%",
+        style_cover_meta
+    ))
+    story.append(PageBreak())
+
+    # ==============================
+    # 1. Résumé exécutif
+    # ==============================
+
+    story.append(Paragraph("1. Résumé exécutif", style_h1))
+    story.append(Paragraph(
+        f"Ce rapport présente les résultats de l'audit qualité mené sur "
+        f"<b>{nb_layers}</b> couches de données géographiques, totalisant "
+        f"<b>{total_controls}</b> contrôles automatisés exécutés le {date_report}. "
+        f"Le score de qualité moyen obtenu est de <b>{average_score}&nbsp;%</b>, "
+        f"avec <b>{total_errors}</b> anomalie(s) détectée(s), soit un taux "
+        f"d'erreur de <b>{error_rate}&nbsp;%</b> sur l'ensemble des contrôles.",
+        style_body
+    ))
+    story.append(Spacer(1, 8 * mm))
+
+    kpi_data = [
+        [
+            Paragraph(f"{nb_layers}", kpi_number_style("#6366f1")),
+            Paragraph(f"{average_score}%", kpi_number_style("#16a34a")),
+            Paragraph(f"{total_controls}", kpi_number_style("#f59e0b")),
+            Paragraph(f"{total_errors}", kpi_number_style("#dc2626")),
+        ],
+        [
+            Paragraph("Couches auditées", style_small),
+            Paragraph("Score moyen", style_small),
+            Paragraph("Contrôles exécutés", style_small),
+            Paragraph(f"Erreurs ({error_rate} %)", style_small),
+        ],
+    ]
+    kpi_table = Table(kpi_data, colWidths=[41.25 * mm] * 4)
+    kpi_table.setStyle(TableStyle([
+        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+        ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+        ('BOX', (0, 0), (-1, -1), 0.6, BORDER),
+        ('INNERGRID', (0, 0), (-1, -1), 0.6, BORDER),
+        ('BACKGROUND', (0, 0), (-1, -1), LIGHT_BG),
+        ('TOPPADDING', (0, 0), (-1, 0), 10),
+        ('BOTTOMPADDING', (0, 0), (-1, 0), 16),
+        ('TOPPADDING', (0, 1), (-1, 1), 6),
+        ('BOTTOMPADDING', (0, 1), (-1, 1), 12),
+        ('LINEABOVE', (0, 0), (0, 0), 3, HexColor("#6366f1")),
+        ('LINEABOVE', (1, 0), (1, 0), 3, HexColor("#16a34a")),
+        ('LINEABOVE', (2, 0), (2, 0), 3, HexColor("#f59e0b")),
+        ('LINEABOVE', (3, 0), (3, 0), 3, HexColor("#dc2626")),
+    ]))
+    story.append(kpi_table)
+    story.append(Spacer(1, 10 * mm))
+
+    # ==============================
+    # 2. Analyse graphique
+    # ==============================
+
+    story.append(Paragraph("2. Analyse graphique", style_h1))
+
+    level_counts = (
+        summary["quality_level"].value_counts().reindex(LEVEL_ORDER, fill_value=0)
+    )
+    pie_labels = list(level_counts.index)
+    pie_values = [int(v) for v in level_counts.values]
+    pie_colors = [_score_color(l) for l in pie_labels]
+
+    story.append(Paragraph("Répartition des couches par niveau de qualité", style_h2))
+    story.append(_build_pie_drawing(pie_labels, pie_values, pie_colors))
+    story.append(Spacer(1, 16 * mm))
+
+    summary_sorted = summary.sort_values("score_quality")
+    bar_labels = summary_sorted["table_name"].tolist()
+    bar_values = [float(v) for v in summary_sorted["score_quality"].tolist()]
+    bar_colors = [_score_color(l) for l in summary_sorted["quality_level"].tolist()]
+
+    story.append(Paragraph("Score de qualité par couche", style_h2))
+    story.append(_build_bar_drawing(bar_labels, bar_values, bar_colors, width_pt=170 * mm))
+    story.append(PageBreak())
+
+    # ==============================
+    # 3. Qualité par couche (tableau)
+    # ==============================
+
+    story.append(Paragraph("3. Détail de la qualité par couche", style_h1))
+
+    layer_rows = [[
+        Paragraph("Couche", style_head_cell),
+        Paragraph("Score qualité", style_head_cell),
+        Paragraph("Niveau", style_head_cell),
+    ]]
+    row_colors = []
+    for _, row in summary.sort_values("score_quality").iterrows():
+        level = row["quality_level"]
+        row_colors.append(_score_color(level))
+        layer_rows.append([
+            Paragraph(str(row["table_name"]), style_cell),
+            Paragraph(f"{row['score_quality']} %", style_cell),
+            Paragraph(level, style_cell_bold),
+        ])
+
+    layer_table = Table(layer_rows, colWidths=[100 * mm, 35 * mm, 35 * mm], repeatRows=1)
+    ts = [
+        ('BACKGROUND', (0, 0), (-1, 0), NAVY),
+        ('FONTSIZE', (0, 0), (-1, 0), 8.5),
+        ('ALIGN', (1, 0), (-1, -1), 'CENTER'),
+        ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+        ('GRID', (0, 0), (-1, -1), 0.4, BORDER),
+        ('TOPPADDING', (0, 0), (-1, -1), 5),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 5),
+    ]
+    for i in range(1, len(layer_rows)):
+        if i % 2 == 0:
+            ts.append(('BACKGROUND', (0, i), (1, i), LIGHT_BG))
+    for i, color in enumerate(row_colors, start=1):
+        ts.append(('BACKGROUND', (2, i), (2, i), HexColor(color)))
+    layer_table.setStyle(TableStyle(ts))
+    story.append(layer_table)
+    story.append(Spacer(1, 10 * mm))
+
+    # ==============================
+    # 4. Détail des contrôles
+    # ==============================
+
+    story.append(Paragraph("4. Détail des contrôles", style_h1))
+
+    details_for_pdf = details
+    truncated = False
+    if len(details) > max_detail_rows:
+        details_for_pdf = details.head(max_detail_rows)
+        truncated = True
+
+    story.append(Paragraph(
+        f"L'ensemble des contrôles exécutés est présenté ci-dessous. "
+        f"Les lignes en erreur sont mises en évidence en rouge.",
+        style_body
+    ))
+    if truncated:
+        story.append(Paragraph(
+            f"<i>Affichage limité aux {max_detail_rows} premières lignes sur "
+            f"{total_controls} au total, afin de conserver un document lisible. "
+            f"Le détail complet reste disponible dans le tableau de bord HTML.</i>",
+            style_small
+        ))
+    story.append(Spacer(1, 4 * mm))
+
+    columns = list(details_for_pdf.columns)
+    header_row = [Paragraph(str(c).replace("_", " ").title(), style_head_cell) for c in columns]
+    detail_rows = [header_row]
+    for _, row in details_for_pdf.iterrows():
+        detail_rows.append([Paragraph(str(row[c]), style_cell) for c in columns])
+
+    col_width = (170 * mm) / max(len(columns), 1)
+    detail_table = Table(
+        detail_rows, colWidths=[col_width] * len(columns), repeatRows=1
+    )
+
+    ts2 = [
+        ('BACKGROUND', (0, 0), (-1, 0), NAVY),
+        ('FONTSIZE', (0, 0), (-1, 0), 7.5),
+        ('GRID', (0, 0), (-1, -1), 0.3, BORDER),
+        ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+        ('TOPPADDING', (0, 0), (-1, -1), 3),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 3),
+    ]
+    status_col = "status" if "status" in columns else None
+    for i in range(1, len(detail_rows)):
+        is_error = status_col and details_for_pdf.iloc[i - 1][status_col] == "ERROR"
+        if is_error:
+            ts2.append(('BACKGROUND', (0, i), (-1, i), ERROR_BG))
+        elif i % 2 == 0:
+            ts2.append(('BACKGROUND', (0, i), (-1, i), LIGHT_BG))
+    detail_table.setStyle(TableStyle(ts2))
+    story.append(detail_table)
+
+    # ==============================
+    # Génération du document
+    # ==============================
+
+    doc = SimpleDocTemplate(
+        str(output),
+        pagesize=A4,
+        topMargin=24 * mm,
+        bottomMargin=22 * mm,
+        leftMargin=20 * mm,
+        rightMargin=20 * mm,
+        title="GeoAudit - Rapport d'audit qualité",
+    )
+
+    doc.build(story, onFirstPage=draw_cover, onLaterPages=draw_content_page)
+
+    print(f"Rapport PDF généré : {output}")
+
+
+if __name__ == "__main__":
+    generate_pdf_report()

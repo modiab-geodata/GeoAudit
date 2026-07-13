@@ -51,7 +51,7 @@ NULL
 'ENTITY_COUNT',
 'statistics',
 'INFO',
-'Nombre total d entités',
+'Nombre total d''entités',
 NULL
 ),
 
@@ -106,7 +106,7 @@ NULL
 'SPATIAL_EXTENT',
 'spatial',
 'INFO',
-'Calcul de l emprise spatiale',
+'Calcul de l''emprise spatiale',
 NULL
 ),
 
@@ -151,6 +151,6 @@ NULL
 'EMPTY_EXTENT',
 'spatial',
 'ERROR',
-'Vérification d une emprise spatiale vide',
+'Vérification d''une emprise spatiale vide',
 NULL
 );
