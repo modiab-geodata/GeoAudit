@@ -29,3 +29,34 @@
 2026-07-13 09:31:31 | INFO | Rapport HTML généré
 2026-07-13 09:31:32 | INFO | Rapport PDF généré
 2026-07-13 09:31:32 | INFO | GeoAudit terminé avec succès - 11 couches analysées
+2026-07-13 09:52:32 | INFO | ========== Démarrage GeoAudit ==========
+2026-07-13 09:52:32 | INFO | Connexion PostgreSQL/PostGIS réussie
+2026-07-13 09:52:32 | INFO | Anciennes sorties quality_results supprimées
+2026-07-13 09:52:32 | INFO | Couches spatiales détectées : ['agenda_jardins_ouverts_2026', 'base_equipement', 'commerces_de_proximite_agrees_ratp', 'communes_dile_de_france_au_01_janvier', 'connexion_ecologique_sdrif_e', 'iris', 'liste_des_jardins_remarquables', 'natura2000_zsc', 'projets_de_gares_sdrif_e', 'stationnement_velo_en_ile_de_france', 'velib_velos_et_bornes_disponibilite_temps_reel']
+2026-07-13 09:52:32 | INFO | Début audit couche : agenda_jardins_ouverts_2026
+2026-07-13 09:52:32 | INFO | Audit terminé : agenda_jardins_ouverts_2026
+2026-07-13 09:52:32 | INFO | Début audit couche : base_equipement
+2026-07-13 09:52:43 | INFO | Audit terminé : base_equipement
+2026-07-13 09:52:43 | INFO | Début audit couche : commerces_de_proximite_agrees_ratp
+2026-07-13 09:52:43 | INFO | Audit terminé : commerces_de_proximite_agrees_ratp
+2026-07-13 09:52:43 | INFO | Début audit couche : communes_dile_de_france_au_01_janvier
+2026-07-13 09:52:43 | INFO | Audit terminé : communes_dile_de_france_au_01_janvier
+2026-07-13 09:52:43 | INFO | Début audit couche : connexion_ecologique_sdrif_e
+2026-07-13 09:52:44 | INFO | Audit terminé : connexion_ecologique_sdrif_e
+2026-07-13 09:52:44 | INFO | Début audit couche : iris
+2026-07-13 09:52:44 | INFO | Audit terminé : iris
+2026-07-13 09:52:44 | INFO | Début audit couche : liste_des_jardins_remarquables
+2026-07-13 09:52:44 | INFO | Audit terminé : liste_des_jardins_remarquables
+2026-07-13 09:52:44 | INFO | Début audit couche : natura2000_zsc
+2026-07-13 09:52:44 | INFO | Audit terminé : natura2000_zsc
+2026-07-13 09:52:44 | INFO | Début audit couche : projets_de_gares_sdrif_e
+2026-07-13 09:52:44 | INFO | Audit terminé : projets_de_gares_sdrif_e
+2026-07-13 09:52:44 | INFO | Début audit couche : stationnement_velo_en_ile_de_france
+2026-07-13 09:52:44 | INFO | Audit terminé : stationnement_velo_en_ile_de_france
+2026-07-13 09:52:44 | INFO | Début audit couche : velib_velos_et_bornes_disponibilite_temps_reel
+2026-07-13 09:52:45 | INFO | Audit terminé : velib_velos_et_bornes_disponibilite_temps_reel
+2026-07-13 09:52:45 | INFO | Résumé des audits généré
+2026-07-13 09:52:45 | INFO | Rapport Excel généré
+2026-07-13 09:52:45 | INFO | Rapport HTML généré
+2026-07-13 09:52:46 | INFO | Rapport PDF généré
+2026-07-13 09:52:46 | INFO | GeoAudit terminé avec succès - 11 couches analysées
