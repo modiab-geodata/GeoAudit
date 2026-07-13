@@ -60,3 +60,88 @@
 2026-07-13 09:52:45 | INFO | Rapport HTML généré
 2026-07-13 09:52:46 | INFO | Rapport PDF généré
 2026-07-13 09:52:46 | INFO | GeoAudit terminé avec succès - 11 couches analysées
+2026-07-13 11:04:25 | INFO | Audit complet terminé via l'interface - 12 couches
+2026-07-13 11:31:28 | INFO | Audit complet terminé via l'interface - 8 couches
+2026-07-13 11:33:16 | INFO | Import + audit terminés via l'interface pour la table base_adresse_95
+2026-07-13 11:33:30 | INFO | Audit complet terminé via l'interface - 9 couches
+2026-07-13 14:24:24 | INFO | ========== Démarrage GeoAudit ==========
+2026-07-13 14:24:24 | INFO | Connexion PostgreSQL/PostGIS réussie
+2026-07-13 14:24:24 | INFO | Anciennes sorties quality_results supprimées
+2026-07-13 14:24:24 | INFO | Couches spatiales détectées : ['agenda_jardins_ouverts_2026', 'base_adresse_95', 'commerces_de_proximite_agrees_ratp', 'communes_dile_de_france_au_01_janvier', 'connexion_ecologique_sdrif_e', 'iris', 'liste_des_jardins_remarquables', 'natura2000_zsc', 'projets_de_gares_sdrif_e']
+2026-07-13 14:24:24 | INFO | Début audit couche : agenda_jardins_ouverts_2026
+2026-07-13 14:24:25 | INFO | Audit terminé : agenda_jardins_ouverts_2026
+2026-07-13 14:24:25 | INFO | Début audit couche : base_adresse_95
+2026-07-13 14:24:27 | INFO | Audit terminé : base_adresse_95
+2026-07-13 14:24:27 | INFO | Début audit couche : commerces_de_proximite_agrees_ratp
+2026-07-13 14:24:27 | INFO | Audit terminé : commerces_de_proximite_agrees_ratp
+2026-07-13 14:24:27 | INFO | Début audit couche : communes_dile_de_france_au_01_janvier
+2026-07-13 14:24:28 | INFO | Audit terminé : communes_dile_de_france_au_01_janvier
+2026-07-13 14:24:28 | INFO | Début audit couche : connexion_ecologique_sdrif_e
+2026-07-13 14:24:28 | INFO | Audit terminé : connexion_ecologique_sdrif_e
+2026-07-13 14:24:28 | INFO | Début audit couche : iris
+2026-07-13 14:24:28 | INFO | Audit terminé : iris
+2026-07-13 14:24:28 | INFO | Début audit couche : liste_des_jardins_remarquables
+2026-07-13 14:24:28 | INFO | Audit terminé : liste_des_jardins_remarquables
+2026-07-13 14:24:28 | INFO | Début audit couche : natura2000_zsc
+2026-07-13 14:24:28 | INFO | Audit terminé : natura2000_zsc
+2026-07-13 14:24:28 | INFO | Début audit couche : projets_de_gares_sdrif_e
+2026-07-13 14:24:28 | INFO | Audit terminé : projets_de_gares_sdrif_e
+2026-07-13 14:24:28 | INFO | Résumé des audits généré
+2026-07-13 14:24:29 | INFO | Rapport Excel généré
+2026-07-13 14:24:29 | INFO | Rapport HTML généré
+2026-07-13 14:24:29 | INFO | Rapport PDF généré
+2026-07-13 14:24:29 | INFO | GeoAudit terminé avec succès - 9 couches analysées
+2026-07-13 14:27:05 | INFO | ========== Démarrage GeoAudit ==========
+2026-07-13 14:27:05 | INFO | Connexion PostgreSQL/PostGIS réussie
+2026-07-13 14:27:05 | INFO | Anciennes sorties quality_results supprimées
+2026-07-13 14:27:05 | INFO | Couches spatiales détectées : ['agenda_jardins_ouverts_2026', 'base_adresse_95', 'commerces_de_proximite_agrees_ratp', 'communes_dile_de_france_au_01_janvier', 'connexion_ecologique_sdrif_e', 'iris', 'liste_des_jardins_remarquables', 'natura2000_zsc', 'projets_de_gares_sdrif_e']
+2026-07-13 14:27:05 | INFO | Début audit couche : agenda_jardins_ouverts_2026
+2026-07-13 14:27:05 | INFO | Audit terminé : agenda_jardins_ouverts_2026
+2026-07-13 14:27:05 | INFO | Début audit couche : base_adresse_95
+2026-07-13 14:27:07 | INFO | Audit terminé : base_adresse_95
+2026-07-13 14:27:07 | INFO | Début audit couche : commerces_de_proximite_agrees_ratp
+2026-07-13 14:27:08 | INFO | Audit terminé : commerces_de_proximite_agrees_ratp
+2026-07-13 14:27:08 | INFO | Début audit couche : communes_dile_de_france_au_01_janvier
+2026-07-13 14:27:08 | INFO | Audit terminé : communes_dile_de_france_au_01_janvier
+2026-07-13 14:27:08 | INFO | Début audit couche : connexion_ecologique_sdrif_e
+2026-07-13 14:27:08 | INFO | Audit terminé : connexion_ecologique_sdrif_e
+2026-07-13 14:27:08 | INFO | Début audit couche : iris
+2026-07-13 14:27:08 | INFO | Audit terminé : iris
+2026-07-13 14:27:08 | INFO | Début audit couche : liste_des_jardins_remarquables
+2026-07-13 14:27:08 | INFO | Audit terminé : liste_des_jardins_remarquables
+2026-07-13 14:27:08 | INFO | Début audit couche : natura2000_zsc
+2026-07-13 14:27:08 | INFO | Audit terminé : natura2000_zsc
+2026-07-13 14:27:08 | INFO | Début audit couche : projets_de_gares_sdrif_e
+2026-07-13 14:27:08 | INFO | Audit terminé : projets_de_gares_sdrif_e
+2026-07-13 14:27:08 | INFO | Résumé des audits généré
+2026-07-13 14:27:09 | INFO | Rapport Excel généré
+2026-07-13 14:27:09 | INFO | Rapport HTML généré
+2026-07-13 14:27:10 | INFO | Rapport PDF généré
+2026-07-13 14:27:10 | INFO | GeoAudit terminé avec succès - 9 couches analysées
+2026-07-13 14:45:55 | INFO | ========== Démarrage GeoAudit ==========
+2026-07-13 14:45:55 | INFO | Connexion PostgreSQL/PostGIS réussie
+2026-07-13 14:45:55 | INFO | Anciennes sorties quality_results supprimées
+2026-07-13 14:45:55 | INFO | Couches spatiales détectées : ['agenda_jardins_ouverts_2026', 'base_adresse_95', 'commerces_de_proximite_agrees_ratp', 'communes_dile_de_france_au_01_janvier', 'connexion_ecologique_sdrif_e', 'iris', 'liste_des_jardins_remarquables', 'natura2000_zsc', 'projets_de_gares_sdrif_e']
+2026-07-13 14:45:55 | INFO | Début audit couche : agenda_jardins_ouverts_2026
+2026-07-13 14:45:55 | INFO | Audit terminé : agenda_jardins_ouverts_2026
+2026-07-13 14:45:55 | INFO | Début audit couche : base_adresse_95
+2026-07-13 14:45:58 | INFO | Audit terminé : base_adresse_95
+2026-07-13 14:45:58 | INFO | Début audit couche : commerces_de_proximite_agrees_ratp
+2026-07-13 14:45:58 | INFO | Audit terminé : commerces_de_proximite_agrees_ratp
+2026-07-13 14:45:58 | INFO | Début audit couche : communes_dile_de_france_au_01_janvier
+2026-07-13 14:45:58 | INFO | Audit terminé : communes_dile_de_france_au_01_janvier
+2026-07-13 14:45:58 | INFO | Début audit couche : connexion_ecologique_sdrif_e
+2026-07-13 14:45:58 | INFO | Audit terminé : connexion_ecologique_sdrif_e
+2026-07-13 14:45:58 | INFO | Début audit couche : iris
+2026-07-13 14:45:58 | INFO | Audit terminé : iris
+2026-07-13 14:45:58 | INFO | Début audit couche : liste_des_jardins_remarquables
+2026-07-13 14:45:58 | INFO | Audit terminé : liste_des_jardins_remarquables
+2026-07-13 14:45:58 | INFO | Début audit couche : natura2000_zsc
+2026-07-13 14:45:59 | INFO | Audit terminé : natura2000_zsc
+2026-07-13 14:45:59 | INFO | Début audit couche : projets_de_gares_sdrif_e
+2026-07-13 14:45:59 | INFO | Audit terminé : projets_de_gares_sdrif_e
+2026-07-13 14:45:59 | INFO | Résumé des audits généré
+2026-07-13 14:45:59 | INFO | Rapport Excel généré
+2026-07-13 14:45:59 | INFO | Rapport HTML généré
+2026-07-13 14:46:00 | INFO | Rapport PDF généré
+2026-07-13 14:46:00 | INFO | GeoAudit terminé avec succès - 9 couches analysées
